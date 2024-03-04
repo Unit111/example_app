@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  api:
+    image: tiangolo/uvicorn-gunicorn-fastapi
+    volumes:
+      - ./api:/api
+    working_dir: /api
+    environment:
+      - MONGO_DETAILS=mongodb://mongodb:27017
+    command: >
+      sh -c "python -m uvicorn main:app --reload --host 0.0.0.0"
+    ports:
+      - "8000:8000"
+  mongodb:
+    image: mongo
+    volumes:
+      - dbdata:/data/db
+    ports:
+      - '27017-27019:27017-27019'
+    logging:
+      driver: none
+volumes:
+    dbdata:
